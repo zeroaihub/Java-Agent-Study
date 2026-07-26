@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: agent-study
+  main:
+    web-application-type: servlet   # 默认 servlet, 流式接口单独用 SseEmitter
+  mvc:
+    async:
+      request-timeout: 600000       # 异步请求(SseEmitter等)超时(ms)
+  # ========== Spring AI 配置(Day3 Function Calling 用) ==========
+  # OpenAI starter 会自动装配 ChatClient/ChatModel, 复用同一个 OpenAI 兼容服务
+  ai:
+    openai:
+      base-url: http://127.0.0.1:1234
+      api-key: ${AI_API_KEY:sk-1234}
+      chat:
+        options:
+          model: huihui-qwen3.5-9b-abliterated-mlx
+          temperature: 0.7
+
+# ========== Day5 RAG（mycode）Embedding 配置 ==========
+# Embedding 模型与聊天模型是两个不同的模型，都在 LM Studio 中加载。
+# EmbeddingClient 会读取以下配置去调用 /v1/embeddings 接口。
+rag:
+  embedding:
+    base-url: http://127.0.0.1:1234          # LM Studio 地址
+    api-key: ${AI_API_KEY:sk-1234}           # LM Studio 无需真实 key，占位即可
+    model: text-embedding-nomic-embed-text-v1.5   # 在 LM Studio 中加载的 Embedding 模型 id（qwen3-embedding-0.6b-dwq 的 DWQ 量化版在本机 LM Studio 无法通过 /v1/embeddings 端点使用，故改用标准 nomic 模型）
+
+server:
+  port: 8080
+  # Tomcat 连接超时: 等待客户端/上游慢响应时, 不要过早断开连接
+  tomcat:
+    connection-timeout: 600000          # 连接读取超时(ms), 默认 20s 太短
+    keep-alive-timeout: 600000          # keep-alive 保活超时(ms)
+
+# ========== 大模型配置 ==========
+# 这里以 OpenAI 兼容协议为例(DeepSeek/通义/智谱等都兼容)
+ai:
+  provider:
+    base-url: http://127.0.0.1:1234
+    api-key: ${AI_API_KEY:sk-1234}
+    model: huihui-qwen3.5-9b-abliterated-mlx
+#    model: google/gemma-4-e4b
+    timeout: 600000                       # 响应超时(ms): 等待大模型思考+生成
+    connect-timeout: 10000                # 连接超时(ms): 仅 TCP 握手
+
+logging:
+  level:
+    com.zero.ai.agentstudy: INFO

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 聊天机器人</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #1f2329;
+            height: 100vh;
+            display: flex;
+        }
+        /* ===== 左侧边栏 ===== */
+        .sidebar {
+            width: 300px;
+            background: #fff;
+            border-right: 1px solid #e5e6eb;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            gap: 16px;
+            overflow-y: auto;
+        }
+        .sidebar h1 { font-size: 18px; color: #165dff; }
+        .field { display: flex; flex-direction: column; gap: 6px; }
+        .field label { font-size: 13px; color: #86909c; }
+        .field input, .field textarea {
+            border: 1px solid #e5e6eb;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        .field input:focus, .field textarea:focus { outline: none; border-color: #165dff; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 8px; }
+        button {
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: opacity .2s;
+        }
+        button:hover { opacity: .85; }
+        button:disabled { opacity: .5; cursor: not-allowed; }
+        .btn-primary { background: #165dff; color: #fff; }
+        .btn-default { background: #f2f3f5; color: #1f2329; }
+        .btn-danger { background: #f53f3f; color: #fff; }
+        /* ===== 统计面板 ===== */
+        .stats { background: #f7f8fa; border-radius: 8px; padding: 12px; font-size: 12px; }
+        .stats .row { display: flex; justify-content: space-between; padding: 3px 0; }
+        .stats .row span:last-child { font-weight: 600; color: #165dff; }
+        /* ===== 主聊天区 ===== */
+        .main { flex: 1; display: flex; flex-direction: column; }
+        .chat-header {
+            padding: 14px 20px;
+            background: #fff;
+            border-bottom: 1px solid #e5e6eb;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .session-tag { font-size: 12px; color: #86909c; font-weight: 400; }
+        .messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+        .msg { display: flex; gap: 10px; max-width: 75%; }
+        .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+        .avatar {
+            width: 34px; height: 34px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; color: #fff; flex-shrink: 0;
+        }
+        .msg.user .avatar { background: #165dff; }
+        .msg.ai .avatar { background: #00b42a; }
+        .msg.system .avatar { background: #ff7d00; }
+        .bubble {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .msg.user .bubble { background: #165dff; color: #fff; }
+        .msg.ai .bubble { background: #fff; border: 1px solid #e5e6eb; }
+        .msg.system .bubble { background: #fff7e8; border: 1px solid #ffe4ba; color: #86520c; font-size: 13px; }
+        /* ===== 输入区 ===== */
+        .input-area { padding: 16px 20px; background: #fff; border-top: 1px solid #e5e6eb; }
+        .input-row { display: flex; gap: 10px; }
+        .input-row textarea {
+            flex: 1; border: 1px solid #e5e6eb; border-radius: 8px;
+            padding: 10px 12px; font-size: 14px; font-family: inherit;
+            resize: none; height: 48px;
+        }
+        .input-row textarea:focus { outline: none; border-color: #165dff; }
+        .send-btns { display: flex; flex-direction: column; gap: 6px; }
+        .send-btns button { height: 100%; min-width: 76px; }
+        .empty-tip { color: #c9cdd4; text-align: center; margin-top: 40px; font-size: 14px; }
+        /* ===== 总结弹窗 ===== */
+        .modal-mask {
+            position: fixed; inset: 0; background: rgba(0,0,0,.4);
+            display: none; align-items: center; justify-content: center; z-index: 100;
+        }
+        .modal-mask.show { display: flex; }
+        .modal {
+            background: #fff; border-radius: 10px; padding: 24px;
+            width: 480px; max-height: 70vh; overflow-y: auto;
+        }
+        .modal h3 { margin-bottom: 16px; color: #165dff; }
+        .modal .item { margin-bottom: 12px; font-size: 14px; }
+        .modal .item b { color: #86909c; display: block; margin-bottom: 4px; font-size: 12px; }
+        .modal ul { padding-left: 20px; }
+        .modal .close-btn { margin-top: 16px; width: 100%; }
+        .sentiment { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; }
+        .sentiment.positive { background: #e8ffea; color: #00b42a; }
+        .sentiment.neutral { background: #f2f3f5; color: #86909c; }
+        .sentiment.negative { background: #ffece8; color: #f53f3f; }
+    </style>
+</head>
+<body>
+    <!-- 左侧边栏 -->
+    <aside class="sidebar">
+        <h1>🤖 AI 聊天机器人</h1>
+        <div class="field">
+            <label>会话 ID（留空自动生成）</label>
+            <input id="sessionId" placeholder="自动生成" />
+        </div>
+        <div class="field">
+            <label>系统人设（systemPrompt，可选）</label>
+            <textarea id="systemPrompt" rows="3" placeholder="例如：你是一个幽默的助手"></textarea>
+        </div>
+        <div class="field">
+            <label>温度 temperature（0~2，可选）</label>
+            <input id="temperature" type="number" step="0.1" min="0" max="2" placeholder="默认 0.7" />
+        </div>
+        <div class="btn-group">
+            <button class="btn-default" onclick="loadHistory()">加载历史</button>
+            <button class="btn-default" onclick="loadUsage()">刷新统计</button>
+            <button class="btn-default" onclick="summarize()">对话总结</button>
+            <button class="btn-danger" onclick="clearSession()">清空会话</button>
+        </div>
+        <div class="stats" id="stats">
+            <div class="row"><span>输入 token</span><span id="stPrompt">0</span></div>
+            <div class="row"><span>输出 token</span><span id="stCompletion">0</span></div>
+            <div class="row"><span>总 token</span><span id="stTotal">0</span></div>
+            <div class="row"><span>累计费用</span><span id="stCost">¥0.000000</span></div>
+            <div class="row"><span>调用次数</span><span id="stCount">0</span></div>
+        </div>
+    </aside>
+
+    <!-- 主聊天区 -->
+    <main class="main">
+        <div class="chat-header">
+            <span>对话窗口</span>
+            <span class="session-tag" id="sessionTag">未开始会话</span>
+        </div>
+        <div class="messages" id="messages">
+            <div class="empty-tip" id="emptyTip">开始你的对话吧～ 支持普通发送与流式发送</div>
+        </div>
+        <div class="input-area">
+            <div class="input-row">
+                <textarea id="input" placeholder="输入消息，Enter 发送，Shift+Enter 换行" onkeydown="onKey(event)"></textarea>
+                <div class="send-btns">
+                    <button class="btn-primary" id="sendBtn" onclick="sendNormal()">发送</button>
+                    <button class="btn-default" id="streamBtn" onclick="sendStream()">流式</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 总结弹窗 -->
+    <div class="modal-mask" id="modalMask">
+        <div class="modal">
+            <h3>📋 对话总结</h3>
+            <div class="item"><b>一句话总结</b><span id="sumSummary">-</span></div>
+            <div class="item"><b>关键要点</b><ul id="sumPoints"></ul></div>
+            <div class="item"><b>情感倾向</b><span id="sumSentiment"></span></div>
+            <button class="btn-primary close-btn" onclick="closeModal()">关闭</button>
+        </div>
+    </div>
+
+    <script src="chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+graph TD
+    A["Demo1~Demo8 学习Demo"] --> F["AiService 核心服务"]
+    B["ChatBotController 聊天机器人"] --> G["ChatBotService 业务服务"]
+    G --> F
+    G --> H["ChatSessionStore 会话存储"]
+    H --> I["InMemoryChatSessionStore"]
+    F --> J["WebClient 调用大模型API"]
+    K["配置层: AiProperties / WebClientConfig / ThreadPoolConfig"] --> J

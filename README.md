@@ -106,12 +106,11 @@ dayXX/
 | 06 | Workflow | Workflow Engine、Node、Context、Executor、企业Workflow | ✅ |
 | 07 | MCP | MCP Client/Server、Protocol、Tool Registry、Workflow + MCP | ✅ |
 | 08 | Multi-Agent | Coordinator、Planner、Research/Writer/Reviewer Agent、共享Memory | ✅ |
-
+| 09 | Browser Agent | Playwright、网页自动操作、浏览器Tool | ✅ |
 ### 进行中 / 规划中
 
 | Day | 主题 | 核心内容 | 状态 |
 |-----|------|----------|------|
-| 09 | Browser Agent | Playwright、网页自动操作、浏览器Tool | 🔲 |
 | 10 | Planning Agent | Reflection、Self Correction、自主规划 | 🔲 |
 | 11 | Human-in-the-loop | 人工审批、Agent中断恢复 | 🔲 |
 | 12 | Long Running Agent | 事件驱动、状态恢复 | 🔲 |

@@ -26,8 +26,12 @@ public enum AgentRole {
     /** 写作者：根据大纲+素材写出正文草稿（draft） */
     WRITER("写作者", "根据大纲与素材撰写完整 Markdown 正文"),
 
+    TRANSLATOR("翻译者", "将中文内容翻译成英文"),
+
     /** 评审者：对草稿打分并给出修改意见（review/score） */
-    REVIEWER("评审者", "独立审校草稿，给出分数与修改意见");
+    REVIEWER("评审者", "独立审校草稿，给出分数与修改意见"),
+
+    ;
 
     /** 角色中文名（给人看的） */
     private final String displayName;

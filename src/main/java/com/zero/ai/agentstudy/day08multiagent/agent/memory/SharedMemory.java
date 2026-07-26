@@ -49,6 +49,10 @@ public class SharedMemory {
 
         /** 评审分数（由 ReviewerAgent 产出，Double，0~1） */
         public static final String SCORE = "score";
+
+        /** 正文结果（由 TranslatorAgent 产出，String，Markdown） */
+        public static final String TRANSLATION = "translation";
+
     }
 
     /** 真正的黑板存储：线程安全的键值对 */

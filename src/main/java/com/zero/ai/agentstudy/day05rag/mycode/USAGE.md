@@ -25,11 +25,11 @@ service/RagService            总指挥：编排「索引流」和「问答流�
 ## 二、前置准备
 
 ### 1. JDK 版本（重要）
-本项目要求 **JDK 17**。若你的 `mvn -version` 显示 Maven 运行在更高版本 JDK（如 23），
-Lombok 注解处理器会失效导致全项目编译报错。编译时请显式指定 JDK 17：
+本项目要求 **JDK 21**。若你的 `mvn -version` 显示 Maven 运行在更低版本 JDK，
+Lombok 注解处理器会失效导致全项目编译报错。编译时请显式指定 JDK 21：
 
 ```bash
-JAVA_HOME=/path/to/jdk-17 mvn clean compile
+JAVA_HOME=/path/to/jdk-21 mvn clean compile
 ```
 
 ### 2. LM Studio 需加载「两个」模型
@@ -50,7 +50,7 @@ rag:
 ## 三、启动
 
 ```bash
-JAVA_HOME=/path/to/jdk-17 mvn spring-boot:run
+JAVA_HOME=/path/to/jdk-21 mvn spring-boot:run
 ```
 
 应用默认端口 `8080`。
@@ -93,7 +93,7 @@ curl -X DELETE http://localhost:8080/api/day05/rag/mycode/clear
 ## 五、端到端验证流程
 
 1. 启动 LM Studio，加载 chat + `qwen3-embedding-0.6b-dwq` 两个模型；
-2. 用 JDK 17 启动应用；
+2. 用 JDK 21 启动应用；
 3. 调 `/ingest` 灌入几条知识；
 4. 调 `/ask` 提问，检查：
    - 命中时：答案基于资料，`references` 有出处；
@@ -112,6 +112,6 @@ curl -X DELETE http://localhost:8080/api/day05/rag/mycode/clear
 
 ## 七、常见问题
 
-- **编译报大量 Lombok 符号找不到**：Maven 用了高版本 JDK，改用 JDK 17。
+- **编译报大量 Lombok 符号找不到**：Maven 用了低版本 JDK，改用 JDK 21。
 - **调用 embedding 超时/报错**：确认 LM Studio 已启动且加载了 embedding 模型，`base-url` 正确。
 - **答案总是拒答**：知识库为空或相似度低于阈值，先确认 `/ingest` 成功、问题与资料相关。

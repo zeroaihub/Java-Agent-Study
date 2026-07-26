@@ -495,7 +495,7 @@ protected AgentResult onError(AgentContext ctx, Exception e) {
 2. 阅读 `agent/core/AbstractAgent.java`，找出 `final execute()`、`try-catch 兜底`、`钩子方法` 三处关键设计。
 3. 阅读 `agent/memory/SharedMemory.java`，理解 `Keys` 常量类的作用。
 4. 阅读 `config/LlmClient.java` 与 `config/MockLlmClient.java`，理解可插拔设计。
-5. 在本地用 JDK 17 执行 `mvn compile`，确认框架骨架编译通过。
+5. 在本地用 JDK 21 执行 `mvn compile`，确认框架骨架编译通过。
 6. **挑战题**：尝试新建一个 `TranslatorAgent`，观察是否真的"不用改任何老代码"就能被 `AgentManager` 收录。
 
 **下一章预告**：第四章我们将逐行剖析四个具体 Agent（Planner/Research/Writer/Reviewer）的完整实现，看它们如何在黑板上"接力"，最终产出一篇完整文章。

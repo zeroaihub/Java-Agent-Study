@@ -200,7 +200,7 @@ day02-llm-api
 
 ## 五、实战项目介绍：AI Chat Service V1
 
-技术栈：**Java 17 + Spring Boot 3 + Spring AI**。
+技术栈：**Java 21 + Spring Boot 4.1.0 + Spring AI 2.0**。
 
 对外提供的接口（示意）：
 

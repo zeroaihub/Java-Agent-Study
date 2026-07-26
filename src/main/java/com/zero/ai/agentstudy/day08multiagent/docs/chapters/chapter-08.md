@@ -39,15 +39,15 @@ graph TB
 
 ---
 
-## 8.2 第一步：用 JDK 17 编译项目
+## 8.2 第一步：用 JDK 21 编译项目
 
-> ⚠️ **重要前提**：本项目**必须用 JDK 17 编译运行**。若用低版本 JDK，Lombok 注解处理会全局失效，导致大量"找不到 getter/builder"的编译错误。
+> ⚠️ **重要前提**：本项目**必须用 JDK 21 编译运行**。若用低版本 JDK，Lombok 注解处理会全局失效，导致大量“找不到 getter/builder”的编译错误。
 
 在项目根目录 `agnetstudy-main` 下执行：
 
 ```bash
-# 指定 JDK 17（macOS 示例路径，按你的实际安装调整）
-export JAVA_HOME=/Users/你的用户名/Library/Java/JavaVirtualMachines/ms-17.0.14/Contents/Home
+# 指定 JDK 21（macOS 示例路径，按你的实际安装调整）
+export JAVA_HOME=/Users/你的用户名/Library/Java/JavaVirtualMachines/ms-21.0.6/Contents/Home
 
 # 编译
 mvn clean compile
@@ -243,8 +243,8 @@ V1 是"能跑通的最小闭环"。接下来的演进方向（对应前几章埋
 
 ## 8.11 常见问题 FAQ
 
-**Q1：为什么第一次跑一定要用 JDK 17？**
-A：项目依赖 Lombok 生成 getter/builder，低版本 JDK 下 Lombok 注解处理会全局失效，导致满屏"找不到方法"的编译错误。务必先 `export JAVA_HOME` 指向 JDK 17。
+**Q1：为什么第一次跑一定要用 JDK 21？**
+A：项目依赖 Lombok 生成 getter/builder，低版本 JDK 下 Lombok 注解处理会全局失效，导致满屏“找不到方法”的编译错误。务必先 `export JAVA_HOME` 指向 JDK 21。
 
 **Q2：没有 API Key 能跑吗？**
 A：能！默认 `MockLlmClient` 按角色返回结构化模拟内容，全流程开箱即跑。接真实模型只需新增一个 `LlmClient` 实现（第七章）。
@@ -282,7 +282,7 @@ A：功能相同。GET `/quick` 用 URL 参数、浏览器可直测；POST `/pro
 
 <details><summary>参考答案</summary>
 
-按 8.2→8.3→8.4.2 执行。成功标志：返回 `success:true`、`article` 含 Markdown 标题、`logs` 有 4 条按 step 1-4 排列、`score` 约 0.9。若失败先检查 JAVA_HOME 是否指向 JDK 17。
+按 8.2→8.3→8.4.2 执行。成功标志：返回 `success:true`、`article` 含 Markdown 标题、`logs` 有 4 条按 step 1-4 排列、`score` 约 0.9。若失败先检查 JAVA_HOME 是否指向 JDK 21。
 </details>
 
 **练习 2**：故意传空 topic，观察失败响应，说明是哪道防线拦下的。

@@ -195,7 +195,7 @@ public class McpAgentController {
 
 ### 3.6 亲手验证完整闭环
 
-启动应用后（记得用 JDK 17），依次访问：
+启动应用后（记得用 JDK 21），依次访问：
 
 ```
 # 1) 看 Agent 发现了哪些工具（感知）

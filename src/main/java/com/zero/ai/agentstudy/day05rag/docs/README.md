@@ -207,7 +207,7 @@ day05rag/
 
 ### 7.3 运行环境
 
-- JDK 17、Maven、Spring Boot 3.4.5、Spring AI 1.0.0（项目 `pom.xml` 已具备）。
+- JDK 21、Maven、Spring Boot 4.1.0、Spring AI 2.0.0（项目 `pom.xml` 已具备）。
 - 一个 OpenAI 兼容的服务（本机 LM Studio：`http://127.0.0.1:1234`，见 `application.yml`）。
 - Embedding：优先复用同一个 OpenAI 兼容服务的 embeddings 接口；若本地无 Embedding 模型，本项目提供一个「本地可离线运行的哈希向量」降级实现，保证 Demo 无外部依赖也能跑通（第三章说明其原理与局限）。
 - 向量存储：Day5 默认使用「内存向量库」，方便零依赖跑通；第五章讲解如何平滑升级到 pgvector。

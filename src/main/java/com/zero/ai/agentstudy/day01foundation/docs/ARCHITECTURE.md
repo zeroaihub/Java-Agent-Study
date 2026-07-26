@@ -86,9 +86,9 @@ Client → ChatController.chat(@Valid ChatRequest)
 
 | 组件 | 版本 / 说明 |
 |------|-------------|
-| JDK | 17 |
-| Spring Boot | 3.4.5 |
-| Spring AI | 1.0.0（BOM 管理） |
+| JDK | 21 |
+| Spring Boot | 4.1.0 |
+| Spring AI | 2.0.0（BOM 管理） |
 | 模型 Starter | spring-ai-starter-model-openai |
 | 其他 | validation、lombok、webflux、fastjson2 |
 

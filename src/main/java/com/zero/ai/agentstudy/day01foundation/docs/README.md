@@ -9,7 +9,7 @@
 
 - 理解 AI Agent 工程师定位、LLM 核心原理（Token / Context Window / Temperature 等）
 - 掌握 Agent 核心公式：`Agent = LLM + Memory + Tools + Workflow`
-- 搭建 Java AI 开发环境（JDK17 + Maven + Spring Boot + Spring AI）
+- 搭建 Java AI 开发环境（JDK21 + Maven + Spring Boot + Spring AI）
 - 用 Spring AI 的 `ChatClient` 完成第一个可运行的 AI Demo
 - 建立企业级 AI 应用架构的初步认知
 

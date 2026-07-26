@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.5</version>
+        <version>4.1.0</version>
         <relativePath/>
     </parent>
 
@@ -18,12 +18,12 @@
     <description>AI Agent 学习项目</description>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <!-- 统一 Spring AI 版本 -->
-        <spring-ai.version>1.0.0</spring-ai.version>  <!-- 也可以用 1.0.0-M6 -->
+        <spring-ai.version>2.0.0</spring-ai.version>
     </properties>
 
-    <!-- ============ 关键点1: 添加仓库（如果使用 Milestone 版本） ============ -->
+    <!-- ============ 关键点1: 添加仓库 ============ -->
     <repositories>
         <repository>
             <id>spring-milestones</id>
@@ -33,7 +33,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <!-- 如果使用 Spring AI 1.0.0 正式版，可以只保留 Maven Central，但加上也无妨 -->
     </repositories>
 
     <!-- ============ 关键点2: 在 dependencyManagement 中导入 BOM ============ -->
@@ -108,7 +107,7 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <!-- 显式配置 Lombok 注解处理器: Spring Boot 3.4 升级后需要显式声明 -->
+            <!-- 显式配置 Lombok 注解处理器 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

@@ -33,35 +33,35 @@
 ┌─────────────────────────────────────────┐
 │  第5层：大模型服务（OpenAI / 通义 / DeepSeek）│  ← 真正的"大脑"，在云端
 ├─────────────────────────────────────────┤
-│  第4层：Spring AI（1.0.0）                 │  ← 屏蔽各家模型差异的统一 SDK
+│  第4层：Spring AI（2.0.0）                 │  ← 屏蔽各家模型差异的统一 SDK
 ├─────────────────────────────────────────┤
-│  第3层：Spring Boot（3.4.5）               │  ← 你熟悉的应用框架
+│  第3层：Spring Boot（4.1.0）               │  ← 你熟悉的应用框架
 ├─────────────────────────────────────────┤
 │  第2层：Maven                             │  ← 依赖管理与构建
 ├─────────────────────────────────────────┤
-│  第1层：JDK 17                            │  ← 运行时基石
+│  第1层：JDK 21                            │  ← 运行时基石
 └─────────────────────────────────────────┘
 ```
 
 逐层说明：
 
-### 第1层：JDK 17（为什么必须 17？）
+### 第1层：JDK 21（为什么推荐 21？）
 
-Spring Boot 3.x 强制要求 **JDK 17 起步**（这是硬性门槛，JDK 8/11 直接不支持）。原因是 Spring Boot 3 基于 Spring Framework 6，全面拥抱了：
-- **Jakarta EE 9+**：包名从 `javax.*` 全部改成 `jakarta.*`
-- **Record、Sealed Class、Switch 模式匹配**等 JDK 17 新特性
+Spring Boot 4.x 最低要求 JDK 17，官方**推荐使用 JDK 21**（虚拟线程、结构化并发、模式匹配等新特性原生支持）。原因是 Spring Boot 4 基于 Spring Framework 7，全面拥抱了：
+- **Jakarta EE 11**：包名从 `javax.*` 全部改成 `jakarta.*`
+- **Virtual Threads、Record、Sealed Class、Switch 模式匹配**等 JDK 21 新特性
 
-如果你还在用 JDK 8，本训练营无法进行，必须升级。
+如果你还在用 JDK 8/11/17，建议升级到 JDK 21 以获得最佳体验。
 
 ### 第2层：Maven（依赖管理）
 
 我们用 Maven 而非 Gradle，因为大部分 Java 企业项目仍以 Maven 为主。核心概念你都熟：`pom.xml`、`dependencyManagement`、`dependencies`。唯一新增的是 **BOM（Bill of Materials，物料清单）** 的用法——后面细讲。
 
-### 第3层：Spring Boot 3.4.5
+### 第3层：Spring Boot 4.1.0
 
-你的老朋友，无需多言。注意版本是 **3.4.5**，对应本项目 `pom.xml` 的 parent 配置。
+你的老朋友，无需多言。注意版本是 **4.1.0**，对应本项目 `pom.xml` 的 parent 配置。
 
-### 第4层：Spring AI 1.0.0（核心新成员）
+### 第4层：Spring AI 2.0.0（核心新成员）
 
 这是本训练营的主角。**Spring AI 之于大模型，就像 JDBC 之于数据库**：
 
@@ -82,7 +82,7 @@ Spring Boot 3.x 强制要求 **JDK 17 起步**（这是硬性门槛，JDK 8/11 �
 
 下面进入实操。**每一步都给出验证命令，验证不通过绝不进入下一步**——这是新手最容易偷懒也最容易翻车的地方。
 
-### Step 1：安装并验证 JDK 17
+### Step 1：安装并验证 JDK 21
 
 打开终端，执行：
 
@@ -90,25 +90,25 @@ Spring Boot 3.x 强制要求 **JDK 17 起步**（这是硬性门槛，JDK 8/11 �
 java -version
 ```
 
-期望输出（版本号 17 开头即可）：
+期望输出（版本号 21 开头即可）：
 
 ```
-openjdk version "17.0.x" ...
+openjdk version "21.0.x" ...
 OpenJDK Runtime Environment ...
 ```
 
-如果显示的是 1.8 或 11，说明 JDK 版本不对。macOS 推荐用 SDKMAN 管理多版本：
+如果显示的是 1.8、11 或 17，说明 JDK 版本不对。macOS 推荐用 SDKMAN 管理多版本：
 
 ```bash
 # 安装 SDKMAN（如已装可跳过）
 curl -s "https://get.sdkman.io" | bash
-# 安装 JDK 17
-sdk install java 17.0.10-tem
-# 切换到 17
-sdk use java 17.0.10-tem
+# 安装 JDK 21
+sdk install java 21.0.6-tem
+# 切换到 21
+sdk use java 21.0.6-tem
 ```
 
-**验证点**：`java -version` 必须显示 17。
+**验证点**：`java -version` 必须显示 21。
 
 ### Step 2：验证 Maven
 
@@ -116,16 +116,16 @@ sdk use java 17.0.10-tem
 mvn -version
 ```
 
-期望看到 Maven 版本（3.6+）以及它引用的 Java 版本是 17：
+期望看到 Maven 版本（3.9+）以及它引用的 Java 版本是 21：
 
 ```
 Apache Maven 3.9.x
-Java version: 17.0.x, vendor: ...
+Java version: 21.0.x, vendor: ...
 ```
 
-**关键坑**：`mvn -version` 里的 `Java version` 必须也是 17。如果 `java -version` 是 17 但 `mvn -version` 是 8，说明 Maven 用的是 `JAVA_HOME` 环境变量指向的旧 JDK，需修正 `JAVA_HOME`。
+**关键坑**：`mvn -version` 里的 `Java version` 必须也是 21。如果 `java -version` 是 21 但 `mvn -version` 是 8，说明 Maven 用的是 `JAVA_HOME` 环境变量指向的旧 JDK，需修正 `JAVA_HOME`。
 
-**验证点**：两个命令的 Java 版本都是 17。
+**验证点**：两个命令的 Java 版本都是 21。
 
 ### Step 3：理解并配置 pom.xml（本项目已配好，重点是看懂）
 
@@ -146,7 +146,7 @@ Java version: 17.0.x, vendor: ...
 </repositories>
 ```
 
-> 说明：Spring AI 1.0.0 正式版在 Maven Central 已有，理论上不加这个仓库也行。但如果你想用 `1.0.0-M6` 这类里程碑版本，就必须加。保留它有备无患。
+> 说明：Spring AI 2.0.0 正式版在 Maven Central 已有，理论上不加这个仓库也行。但保留它有备无患。
 
 **关键点 2：用 BOM 统一 Spring AI 版本**
 
@@ -156,7 +156,7 @@ Java version: 17.0.x, vendor: ...
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-bom</artifactId>
-            <version>${spring-ai.version}</version>  <!-- 1.0.0 -->
+            <version>${spring-ai.version}</version>  <!-- 2.0.0 -->
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -296,11 +296,11 @@ Spring Boot 的多环境 Profile 机制在 AI 项目里同样适用，你已有�
 
 ### 坑 1：JDK 版本不对（最高频）
 
-**现象**：`mvn compile` 报错 `invalid target release: 17` 或 `class file version 61.0`。
+**现象**：`mvn compile` 报错 `invalid target release: 21` 或 `class file version 65.0`。
 
-**根因**：`JAVA_HOME` 指向了 JDK 8/11。
+**根因**：`JAVA_HOME` 指向了 JDK 8/11/17。
 
-**解决**：确认 `java -version` 和 `mvn -version` 里的 Java 都是 17；用 SDKMAN 切换；必要时显式设置 `JAVA_HOME`。
+**解决**：确认 `java -version` 和 `mvn -version` 里的 Java 都是 21；用 SDKMAN 切换；必要时显式设置 `JAVA_HOME`。
 
 ### 坑 2：Spring AI 依赖下载不下来
 
@@ -308,7 +308,7 @@ Spring Boot 的多环境 Profile 机制在 AI 项目里同样适用，你已有�
 
 **根因**：① 网络到不了仓库；② 用了 Milestone 版本却没配 `spring-milestones` 仓库。
 
-**解决**：确认仓库配置；国内可配置阿里云 Maven 镜像加速；确认版本号（1.0.0 正式版在 Central）。
+**解决**：确认仓库配置；国内可配置阿里云 Maven 镜像加速；确认版本号（2.0.0 正式版在 Central）。
 
 ### 坑 3：API Key 无效 / 401 Unauthorized（最隐蔽）
 
@@ -337,11 +337,11 @@ Spring Boot 的多环境 Profile 机制在 AI 项目里同样适用，你已有�
 
 **解决**：`base-url` 和 `model` 必须成对配置，一家一套。
 
-### 坑 6：Lombok 注解不生效（Spring Boot 3.4 特有）
+### 坑 6：Lombok 注解不生效
 
 **现象**：`@Data`、`@Slf4j` 生成的方法找不到，编译报错。
 
-**根因**：Spring Boot 3.4 升级后，需在 `maven-compiler-plugin` 里**显式声明 Lombok 注解处理器**。
+**根因**：需在 `maven-compiler-plugin` 里**显式声明 Lombok 注解处理器**。
 
 **解决**：本项目 `pom.xml` 已在 `build` 里配好 `annotationProcessorPaths`，无需额外操作。若你自建项目遇到，把这段配置抄过去即可。
 
@@ -350,8 +350,8 @@ Spring Boot 的多环境 Profile 机制在 AI 项目里同样适用，你已有�
 建议把下面这张清单贴在显示器边，每次新环境按此自检：
 
 ```
-[ ] java -version 显示 17
-[ ] mvn -version 的 Java 也是 17
+[ ] java -version 显示 21
+[ ] mvn -version 的 Java 也是 21
 [ ] mvn clean compile 显示 BUILD SUCCESS
 [ ] echo $API_KEY 能打印出 Key
 [ ] application.yml 中无明文 Key
@@ -364,14 +364,14 @@ Spring Boot 的多环境 Profile 机制在 AI 项目里同样适用，你已有�
 
 | 知识点 | 一句话记忆 |
 |--------|-----------|
-| JDK 版本 | Spring Boot 3 必须 JDK 17 起步 |
+| JDK 版本 | Spring Boot 4 推荐 JDK 21（虚拟线程原生支持） |
 | Spring AI 定位 | 大模型界的 JDBC，统一 API 屏蔽差异 |
 | BOM 作用 | 一处声明版本，Spring AI 全家不用写版本号 |
 | Starter 作用 | 引入即自动装配 ChatClient，开箱即用 |
 | API Key | 走环境变量，绝不硬编码，绝不进 Git |
 | 401 排查 | 启动成功但调用报 401 → 先查 Key，别查代码 |
 | 换模型 | 只改 base-url + model，代码零改动 |
-| Lombok | Spring Boot 3.4 需显式声明注解处理器 |
+| Lombok | 需在 maven-compiler-plugin 显式声明注解处理器 |
 
 ---
 
@@ -387,8 +387,8 @@ Spring Boot 的多环境 Profile 机制在 AI 项目里同样适用，你已有�
 
 ## 常见面试题（企业视角）
 
-**Q1：Spring Boot 3 为什么强制 JDK 17？**
-A：Spring Boot 3 基于 Spring Framework 6，采用 Jakarta EE 9+（包名 `javax→jakarta`），并大量使用 Record、Sealed Class 等 JDK 17 特性，故最低要求 17。
+**Q1：Spring Boot 4 为什么推荐 JDK 21？**
+A：Spring Boot 4 基于 Spring Framework 7，采用 Jakarta EE 11，并充分利用 Virtual Threads（虚拟线程）、结构化并发、Record、Sealed Class 等 JDK 21 特性，官方推荐 JDK 21 以获得最佳性能与开发体验。
 
 **Q2：Spring AI 的核心价值是什么？**
 A：提供统一的、面向大模型的抽象（ChatClient/ChatModel/EmbeddingModel 等），屏蔽 OpenAI、通义、DeepSeek 等各家 API 差异，让业务代码与具体模型解耦，换模型只改配置。

@@ -6,9 +6,9 @@
 
 一个面向企业级落地的 AI Agent 系统学习项目，涵盖 LLM API、Function Calling、Memory、RAG、Workflow、MCP、Multi-Agent 等核心能力，最终构建完整的 **ZeroHub AI Agent Platform**。
 
-![Java](https://img.shields.io/badge/Java-17-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.5-brightgreen)
-![Spring AI](https://img.shields.io/badge/Spring%20AI-1.0.0-green)
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-brightgreen)
+![Spring AI](https://img.shields.io/badge/Spring%20AI-2.0.0-green)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 </div>
@@ -37,8 +37,8 @@
 
 | 类别 | 技术 |
 |------|------|
-| 语言 | Java 17 |
-| 框架 | Spring Boot 3.4.5 / Spring AI 1.0.0 |
+| 语言 | Java 21 |
+| 框架 | Spring Boot 4.1.0 / Spring AI 2.0.0 |
 | AI 框架 | Spring AI / LangChain4j |
 | 构建工具 | Maven |
 | 数据库 | PostgreSQL + pgvector |
@@ -140,8 +140,8 @@ dayXX/
 
 ### 环境要求
 
-- JDK 17+
-- Maven 3.8+
+- JDK 21+
+- Maven 3.9+
 - [LM Studio](https://lmstudio.ai/)（本地模型推理）或任意 OpenAI 兼容 API 服务
 
 ### 1. 克隆项目

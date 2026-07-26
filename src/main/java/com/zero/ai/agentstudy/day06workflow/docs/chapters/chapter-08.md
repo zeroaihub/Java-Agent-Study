@@ -81,10 +81,10 @@ public class TravelController {
 
 ## 第四部分：跑起来 & 预期输出
 
-**启动**（记得用 JDK 17，否则 Lombok 失效）：
+**启动**（记得用 JDK 21，否则 Lombok 失效）：
 ```bash
 cd agnetstudy-main
-JAVA_HOME=/Users/ext.tuyue1/Library/Java/JavaVirtualMachines/ms-17.0.14/Contents/Home \
+JAVA_HOME=/Users/ext.tuyue1/Library/Java/JavaVirtualMachines/ms-21.0.6/Contents/Home \
   mvn spring-boot:run
 ```
 
@@ -118,7 +118,7 @@ curl "http://localhost:8080/day6/travel?input=我想去杭州玩三天"
 6. Service 把 `WorkflowResult` 转 `TravelResponse` 返回。
 
 **避坑**：
-1. **JDK 版本**：本项目必须 JDK 17，否则 Lombok 注解全失效、编译报错。
+1. **JDK 版本**：本项目必须 JDK 21，否则 Lombok 注解全失效、编译报错。
 2. **端口占用**：8080 被占则改 `application.yml` 的 `server.port`。
 3. **PlanNode 是规则实现**：为保证无外网依赖可独立运行。接真实大模型只需把 PlanNode 内部换成 Spring AI 的 `ChatClient`，引擎与其他节点零改动——这正是「面向接口」的红利。
 

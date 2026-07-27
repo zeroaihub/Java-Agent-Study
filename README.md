@@ -64,6 +64,8 @@ Java-Agent-Study/
 │   ├── day06workflow/         # Day6  - Workflow Engine
 │   ├── day07mcp/              # Day7  - MCP协议
 │   ├── day08multiagent/       # Day8  - Multi-Agent协作
+│   ├── day09browseragent/     # Day9  - Browser Agent & 浏览器自动化
+│   ├── day10planningagent/    # Day10 - Planning Agent & 自主规划
 │   ├── back/                  # 早期实验代码（API原理/流式/结构化输出）
 │   └── AgentStudyApplication.java
 ├── src/main/resources/
@@ -107,11 +109,12 @@ dayXX/
 | 07 | MCP | MCP Client/Server、Protocol、Tool Registry、Workflow + MCP | ✅ |
 | 08 | Multi-Agent | Coordinator、Planner、Research/Writer/Reviewer Agent、共享Memory | ✅ |
 | 09 | Browser Agent | Playwright、网页自动操作、浏览器Tool | ✅ |
+| 10 | Planning Agent | Goal拆解、DAG调度、Reflection、Self-Correction、自主规划引擎 | ✅ |
+
 ### 进行中 / 规划中
 
 | Day | 主题 | 核心内容 | 状态 |
 |-----|------|----------|------|
-| 10 | Planning Agent | Reflection、Self Correction、自主规划 | 🔲 |
 | 11 | Human-in-the-loop | 人工审批、Agent中断恢复 | 🔲 |
 | 12 | Long Running Agent | 事件驱动、状态恢复 | 🔲 |
 | 13 | AI Office Agent | 办公自动化 | 🔲 |
@@ -211,6 +214,14 @@ AI 发展史、LLM 核心概念、Java AI 开发环境搭建、使用 Spring AI 
 ### Day08 - Multi-Agent（多智能体协作）
 
 构建 Coordinator 调度器 + Planner 规划器 + 多专职 Agent（Research / Writer / Reviewer），实现共享 Memory 与 Workflow + MCP + Multi-Agent 联合编排。
+
+### Day09 - Browser Agent（浏览器智能体）
+
+基于 Playwright 实现浏览器自动化：BrowserSession 会话管理、ContextPool 连接池、PlaywrightEngine 执行引擎、BrowserTools 工具集，让 Agent 能操作真实网页完成信息提取与自动操作。
+
+### Day10 - Planning Agent（规划智能体）
+
+Agent 从「被驱动」走向「自主」的分水岭。实现完整 Planning Engine：Goal 目标建模 → LlmPlanner 动态规划 → DagScheduler 依赖调度 → StepExecutor 逐步执行 → ToolSelector 工具选择 → Reflector 反思与自我修正 → PlanningContext 状态管理，构建企业级自主规划引擎。
 
 ---
 

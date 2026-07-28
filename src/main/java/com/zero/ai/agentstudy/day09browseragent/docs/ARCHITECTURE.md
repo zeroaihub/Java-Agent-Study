@@ -191,7 +191,7 @@ Spring AI 框架自动执行对应 @Tool 方法（BrowserTools）
 
 | 隔离手段 | 做法 |
 | --- | --- |
-| 独立包 | `com.example.agentstudy.day09browseragent` |
+| 独立包 | `com.zero.ai.agentstudy.day09browseragent` |
 | 独立 Bean 名 | ChatClient 命名为 `day09ChatClient` |
 | 依赖注入指定 | 用 `@Qualifier("day09ChatClient")` 精确注入 |
 | 配置项隔离 | 前缀 `day09.browser`，全部带默认值 |

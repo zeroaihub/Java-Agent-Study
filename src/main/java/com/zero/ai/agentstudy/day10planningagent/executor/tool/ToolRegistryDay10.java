@@ -12,11 +12,11 @@ import java.util.Optional;
  * 新增工具只需实现 Tool + @Component，无需改动注册表。
  */
 @Component
-public class ToolRegistry {
+public class ToolRegistryDay10 {
 
     private final Map<String, Tool> tools = new LinkedHashMap<>();
 
-    public ToolRegistry(List<Tool> toolList) {
+    public ToolRegistryDay10(List<Tool> toolList) {
         for (Tool t : toolList) {
             tools.put(t.name(), t);
         }

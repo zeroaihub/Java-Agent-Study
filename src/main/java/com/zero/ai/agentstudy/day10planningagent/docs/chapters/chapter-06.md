@@ -146,7 +146,7 @@ package com.zero.ai.agentstudy.day10planningagent.executor;
 
 import com.zero.ai.agentstudy.day10planningagent.core.PlanStep;
 import com.zero.ai.agentstudy.day10planningagent.executor.tool.Tool;
-import com.zero.ai.agentstudy.day10planningagent.executor.tool.ToolRegistry;
+import com.zero.ai.agentstudy.day10planningagent.executor.tool.ToolRegistryDay10;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -154,9 +154,11 @@ import java.util.Optional;
 /** 工具选择器：决定一步用哪个工具。 */
 @Component
 public class ToolSelector {
-    private final ToolRegistry registry;
+    private final ToolRegistryDay10 registry;
 
-    public ToolSelector(ToolRegistry registry) { this.registry = registry; }
+    public ToolSelector(ToolRegistryDay10 registry) {
+        this.registry = registry;
+    }
 
     public Tool select(PlanStep step) {
         // 1) 优先采用 Planner 给出的建议工具
@@ -168,7 +170,7 @@ public class ToolSelector {
         String d = step.description();
         if (d.contains("抓取") || d.contains("浏览") || d.contains("页面") || d.contains("采集")) {
             return registry.find("browser").orElseGet(() -> registry.find("llm").orElseThrow());
-      }
+        }
         return registry.find("llm")
                 .orElseThrow(() -> new IllegalStateException("无可用工具处理步骤：" + step.id()));
     }

@@ -68,8 +68,7 @@ public class Day02ChatServiceImpl implements Day02ChatService {
                         }
                     })
                     .options(OpenAiChatOptions.builder()
-                            .temperature(resolveTemperature(request))
-                            .build())
+                            .temperature(resolveTemperature(request)))
                     .user(request.getMessage())
                     .call()
                     .chatResponse();
@@ -99,8 +98,7 @@ public class Day02ChatServiceImpl implements Day02ChatService {
                     }
                 })
                 .options(OpenAiChatOptions.builder()
-                        .temperature(resolveTemperature(request))
-                        .build())
+                        .temperature(resolveTemperature(request)))
                 .user(request.getMessage())
                 .stream()
                 .content()
@@ -132,8 +130,7 @@ public class Day02ChatServiceImpl implements Day02ChatService {
             org.springframework.ai.chat.model.ChatResponse resp = chatClient.prompt()
                     .messages(history)                 // 携带历史上下文
                     .options(OpenAiChatOptions.builder()
-                            .temperature(resolveTemperature(request))
-                            .build())
+                            .temperature(resolveTemperature(request)))
                     .user(request.getMessage())
                     .call()
                     .chatResponse();

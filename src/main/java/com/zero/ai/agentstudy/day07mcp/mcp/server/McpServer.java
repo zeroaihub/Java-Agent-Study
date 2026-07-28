@@ -5,7 +5,7 @@ import com.zero.ai.agentstudy.day07mcp.mcp.protocol.JsonRpcError;
 import com.zero.ai.agentstudy.day07mcp.mcp.protocol.JsonRpcRequest;
 import com.zero.ai.agentstudy.day07mcp.mcp.protocol.JsonRpcResponse;
 import com.zero.ai.agentstudy.day07mcp.mcp.protocol.McpMethods;
-import com.zero.ai.agentstudy.day07mcp.mcp.registry.ToolRegistry;
+import com.zero.ai.agentstudy.day07mcp.mcp.registry.ToolRegistryDay07;
 import com.zero.ai.agentstudy.day07mcp.mcp.tool.McpTool;
 import com.zero.ai.agentstudy.day07mcp.util.McpTraceLogger;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import java.util.Map;
  * <p>教学要点：Server 的唯一职责是「读懂 JSON-RPC 请求的 method，分发到对应处理逻辑，
  * 再把结果包装成 JSON-RPC 响应」。它是一个纯粹的「协议中枢」：</p>
  * <ul>
- *   <li>不认识任何具体工具（工具的事全交给 {@link ToolRegistry}）；</li>
+ *   <li>不认识任何具体工具（工具的事全交给 {@link ToolRegistryDay07}）；</li>
  *   <li>不关心传输方式（传输的事交给 Transport）。</li>
  * </ul>
  *
@@ -48,7 +48,7 @@ public class McpServer {
     private static final String SERVER_NAME = "agentstudy-mcp-server";
     private static final String SERVER_VERSION = "1.0.0";
 
-    private final ToolRegistry toolRegistry;
+    private final ToolRegistryDay07 toolRegistry;
     private final McpTraceLogger traceLogger;
 
     /**
@@ -57,7 +57,7 @@ public class McpServer {
      * @param toolRegistry 工具注册中心
      * @param traceLogger  链路日志器
      */
-    public McpServer(ToolRegistry toolRegistry, McpTraceLogger traceLogger) {
+    public McpServer(ToolRegistryDay07 toolRegistry, McpTraceLogger traceLogger) {
         this.toolRegistry = toolRegistry;
         this.traceLogger = traceLogger;
     }

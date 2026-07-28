@@ -102,13 +102,11 @@ public class TextSplitter {
         //      minChunkLengthToEmbed   小于该长度的块直接丢弃（过滤空/极短块）
         //      maxNumChunks            单篇最多切出的块数
         //      keepSeparator           是否保留换行等分隔符
-        TokenTextSplitter splitter = new TokenTextSplitter(
-                100,   // 目标块 token 数：约对应 200~300 字，1000 字文档可切成 4~5 块
-                50,   // 最小块字符数
-                5,     // 最小可嵌入字符数
-                10000, // 最大块数
-                true   // 保留分隔符
-        );
+        TokenTextSplitter splitter = TokenTextSplitter.builder()
+                .withChunkSize(100)
+                .withMinChunkSizeChars(50)
+                .withMinChunkSizeChars(5)
+                .withMaxNumChunks(10000).withKeepSeparator(true).build();
 
         // 2. 把整篇正文包成一个 Document 丢给它切分（按 token 切、尽量在句子边界断开）。
         List<Document> documents = splitter.apply(List.of(new Document(content)));

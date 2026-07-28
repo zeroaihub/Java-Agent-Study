@@ -1,6 +1,6 @@
 package com.zero.ai.agentstudy.day09browseragent.core;
 
-import com.example.agentstudy.day09browseragent.config.BrowserProperties;
+import com.zero.ai.agentstudy.day09browseragent.config.BrowserProperties;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Playwright;

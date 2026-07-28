@@ -1,8 +1,8 @@
 package com.zero.ai.agentstudy.day09browseragent.service;
 
-import com.example.agentstudy.day09browseragent.config.BrowserProperties;
-import com.example.agentstudy.day09browseragent.core.BrowserContextPool;
-import com.example.agentstudy.day09browseragent.core.BrowserSession;
+import com.zero.ai.agentstudy.day09browseragent.config.BrowserProperties;
+import com.zero.ai.agentstudy.day09browseragent.core.BrowserContextPool;
+import com.zero.ai.agentstudy.day09browseragent.core.BrowserSession;
 import com.microsoft.playwright.Download;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;

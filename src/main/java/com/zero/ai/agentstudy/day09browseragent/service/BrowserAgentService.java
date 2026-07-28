@@ -1,6 +1,6 @@
 package com.zero.ai.agentstudy.day09browseragent.service;
 
-import com.example.agentstudy.day09browseragent.tool.BrowserTools;
+import com.zero.ai.agentstudy.day09browseragent.tool.BrowserTools;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;

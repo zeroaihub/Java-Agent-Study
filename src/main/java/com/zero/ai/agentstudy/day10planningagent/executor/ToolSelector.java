@@ -2,7 +2,7 @@ package com.zero.ai.agentstudy.day10planningagent.executor;
 
 import com.zero.ai.agentstudy.day10planningagent.core.PlanStep;
 import com.zero.ai.agentstudy.day10planningagent.executor.tool.Tool;
-import com.zero.ai.agentstudy.day10planningagent.executor.tool.ToolRegistry;
+import com.zero.ai.agentstudy.day10planningagent.executor.tool.ToolRegistryDay10;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -13,9 +13,9 @@ import java.util.Optional;
 @Component
 public class ToolSelector {
 
-    private final ToolRegistry registry;
+    private final ToolRegistryDay10 registry;
 
-    public ToolSelector(ToolRegistry registry) {
+    public ToolSelector(ToolRegistryDay10 registry) {
         this.registry = registry;
     }
 

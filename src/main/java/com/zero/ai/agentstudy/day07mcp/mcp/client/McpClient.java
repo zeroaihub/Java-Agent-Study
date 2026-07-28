@@ -53,9 +53,9 @@ public class McpClient {
      * @param transport    传输层（本项目为 InProcessTransport）
      * @param objectMapper Jackson 映射器，用于把 result 转成强类型
      */
-    public McpClient(Transport transport, ObjectMapper objectMapper) {
+    public McpClient(Transport transport) {
         this.transport = transport;
-        this.objectMapper = objectMapper;
+        this.objectMapper = new ObjectMapper();
     }
 
     /**

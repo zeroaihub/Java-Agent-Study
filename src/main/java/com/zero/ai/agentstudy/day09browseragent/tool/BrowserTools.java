@@ -1,6 +1,6 @@
 package com.zero.ai.agentstudy.day09browseragent.tool;
 
-import com.example.agentstudy.day09browseragent.service.BrowserActionService;
+import com.zero.ai.agentstudy.day09browseragent.service.BrowserActionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;

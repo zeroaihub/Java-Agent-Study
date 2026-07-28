@@ -1,9 +1,9 @@
 package com.zero.ai.agentstudy.day09browseragent.controller;
 
-import com.example.agentstudy.day09browseragent.common.R;
-import com.example.agentstudy.day09browseragent.dto.AgentTaskRequest;
-import com.example.agentstudy.day09browseragent.service.BrowserActionService;
-import com.example.agentstudy.day09browseragent.service.BrowserAgentService;
+import com.zero.ai.agentstudy.day09browseragent.common.R;
+import com.zero.ai.agentstudy.day09browseragent.dto.AgentTaskRequest;
+import com.zero.ai.agentstudy.day09browseragent.service.BrowserActionService;
+import com.zero.ai.agentstudy.day09browseragent.service.BrowserAgentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

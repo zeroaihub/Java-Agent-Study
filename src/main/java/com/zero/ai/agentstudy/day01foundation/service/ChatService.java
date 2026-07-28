@@ -56,10 +56,8 @@ public class ChatService {
 
             // 功能3：动态温度 —— 传了就通过 OpenAiChatOptions 运行时注入
             if (request.getTemperature() != null) {
-                OpenAiChatOptions options = OpenAiChatOptions.builder()
-                        .temperature(request.getTemperature())
-                        .build();
-                spec = spec.options(options);
+                spec = spec.options(OpenAiChatOptions.builder()
+                        .temperature(request.getTemperature()));
             }
 
             // 功能1：普通聊天（user -> call -> content）

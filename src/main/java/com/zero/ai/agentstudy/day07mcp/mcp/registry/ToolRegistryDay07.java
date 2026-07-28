@@ -31,7 +31,7 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-public class ToolRegistry {
+public class ToolRegistryDay07 {
 
     /** name → McpTool 的索引表（保持插入顺序，便于阅读日志） */
     private final Map<String, McpTool> toolMap = new LinkedHashMap<>();
@@ -44,7 +44,7 @@ public class ToolRegistry {
      *
      * @param tools 容器内所有工具（可能为空）
      */
-    public ToolRegistry(List<McpTool> tools) {
+    public ToolRegistryDay07(List<McpTool> tools) {
         if (tools != null) {
             for (McpTool tool : tools) {
                 String name = tool.name();

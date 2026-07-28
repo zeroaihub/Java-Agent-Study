@@ -1,6 +1,6 @@
 package com.zero.ai.agentstudy.day09browseragent.exception;
 
-import com.example.agentstudy.day09browseragent.common.R;
+import com.zero.ai.agentstudy.day09browseragent.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author AI架构师
  */
 @Slf4j
-@RestControllerAdvice(basePackages = "com.example.agentstudy.day09browseragent.controller")
+@RestControllerAdvice(basePackages = "com.zero.ai.agentstudy.day09browseragent.controller")
 public class Day09ExceptionHandler {
 
     /** 400：参数校验失败。 */

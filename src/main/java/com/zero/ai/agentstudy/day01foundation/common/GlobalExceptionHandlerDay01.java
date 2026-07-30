@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @RestControllerAdvice(basePackages = "com.zero.ai.agentstudy.day01foundation.controller")
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandlerDay01 {
 
     /** 参数校验异常（@NotBlank 等触发） */
     @ExceptionHandler(MethodArgumentNotValidException.class)

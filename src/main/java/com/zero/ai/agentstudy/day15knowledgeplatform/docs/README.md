@@ -302,22 +302,22 @@ Tenant（企业）
 
 我们把整个平台按 DDD + Spring Modulith 拆成 14 个模块。每个模块职责单一、边界清晰、可独立测试。后续章节将逐个实现。
 
-| 模块 | 中文 | 职责 |
-| --- | --- | --- |
-| `knowledge-core` | 核心域 | 通用领域模型、值对象、统一异常、统一结果、事件基类 |
-| `knowledge-document` | 文档域 | 文档聚合根、上传、版本、状态机、文档仓储 |
-| `knowledge-parser` | 解析 | PDF/Word/Excel/PPT/MD/HTML/TXT 解析 + 图片 OCR，策略模式 |
-| `knowledge-chunk` | 切分 | Chunk 管线，多种切分策略（定长/语义/结构化） |
-| `knowledge-embedding` | 向量化 | Embedding 管线，接 Spring AI，写入 pgvector |
-| `knowledge-retriever` | 检索 | Vector + BM25 混合检索，RRF 融合 |
-| `knowledge-reranker` | 重排 | Cross-Encoder 重排序，策略可插拔 |
-| `knowledge-workspace` | 工作空间 | Tenant / Workspace / KnowledgeBase 管理 |
-| `knowledge-acl` | 权限 | 访问控制、权限感知检索过滤 |
-| `knowledge-sync` | 同步 | 增量同步、删除同步、事件驱动 |
-| `knowledge-browser` | 采集 | Playwright 浏览器自动采集网页知识 |
-| `knowledge-api` | 统一 API | 对外 REST API，供各 Agent 调用 |
-| `knowledge-admin` | 管理端 | 后台管理接口（知识库/文档/用户/权限管理） |
-| `docs` | 文档 | README / ARCHITECTURE / API / DATABASE / DEPLOY / TESTING / ADR / ROADMAP |
+| 模块 | 中文 | 职责 | 状态 |
+| --- | --- | --- | --- |
+| `knowledge-core` | 核心域 | 通用领域模型、值对象、统一异常、统一结果、事件基类 | ✅ 已实现（第 1 章） |
+| `knowledge-document` | 文档域 | 文档聚合根、上传、版本、状态机、文档仓储 | ✅ 已实现（第 3 章） |
+| `knowledge-parser` | 解析 | PDF/Word/Excel/PPT/MD/HTML/TXT 解析 + 图片 OCR，策略模式 | ✅ 已实现（第 4 章） |
+| `knowledge-chunk` | 切分 | Chunk 管线，多种切分策略（定长/语义/结构化） | ✅ 已实现（第 5 章） |
+| `knowledge-embedding` | 向量化 | Embedding 管线，批处理 + 去重缓存 + 模型锁版本 | ✅ 已实现（第 6 章） |
+| `knowledge-retriever` | 检索 | Vector + BM25 混合检索，RRF 融合，双索引一致性 | ✅ 已实现（第 7 章） |
+| `knowledge-reranker` | 重排 | 精排（直通/启发式/CrossEncoder）+ MMR 多样性去重 | ✅ 已实现（第 8 章） |
+| `knowledge-workspace` | 工作空间 | Tenant / Workspace / KnowledgeBase 管理 | ✅ 已实现（第 9 章） |
+| `knowledge-acl` | 权限 | 访问控制、权限感知检索过滤 | ✅ 已实现（第 10 章） |
+| `knowledge-sync` | 同步 | 内容指纹增量同步、删除同步、事件驱动 | ✅ 已实现（第 11 章） |
+| `knowledge-browser` | 采集 | 网页抓取端口 + JDK 实现（Playwright 为可选适配器） | ✅ 已实现（第 12 章） |
+| `knowledge-api` | 统一 API | 对外 REST API，供各 Agent 调用 | ✅ 已实现（第 13 章） |
+| `knowledge-admin` | 管理端 | 授权审计、平台统计、索引一致性检查 | ✅ 已实现（第 14 章） |
+| `docs` | 文档 | README / ARCHITECTURE / chapters / API / DATABASE / DEPLOY / ADR / ROADMAP | 🟡 部分（见下） |
 
 模块依赖方向（严格单向，杜绝循环依赖）：
 
@@ -419,21 +419,99 @@ mvn spring-boot:run
 
 ---
 
-## 十二、配套文档索引
+## 十二、章节导航与当前进度
 
-- `ARCHITECTURE.md`：整体架构、全链路 ASCII 图、如何支撑百万文档/SaaS/多租户。
-- `API.md`：知识库/上传/检索/Workspace/ACL/Embedding/管理接口 + OpenAPI。
-- `DATABASE.md`：全部表结构、索引设计、ER 图、优化。
-- `DEPLOY.md`：Docker / Compose / K8s / 高可用 / 配置管理。
-- `TESTING.md`：单测 / 集成测试 / Testcontainers / 性能测试。
-- `adr/`：架构决策记录（为什么 Modulith / pgvector / Hybrid / Rerank / DDD）。
-- `ROADMAP.md`：V1 / V2 / V3 SaaS 演进路线。
-- `TODO.md`：⭐ 必做 / ⭐⭐ 进阶 / ⭐⭐⭐ 企业挑战。
-- `CHANGELOG.md`：变更记录。
-- `chapters/`：每章学习总结、代码解析、面试题、扩展阅读。
+| 章节 | 主题 | 配套代码 / Demo | 状态 |
+| --- | --- | --- | --- |
+| 第 1 章 | knowledge-core 领域内核 | `core/` | ✅ |
+| 第 2 章 | 整体架构设计：从 14 个模块看清全局 | `docs/ARCHITECTURE.md` | ✅ |
+| 第 3 章 | knowledge-document：文档聚合与生命周期状态机 | `document/` · `Chapter03Demo` | ✅ |
+| 第 4 章 | knowledge-parser：多格式解析与 OCR 兜底 | `parser/` · `Chapter04Demo` | ✅ |
+| 第 5 章 | knowledge-chunk：三种切分策略与 Chunk 装配 | `chunk/` · `Chapter05Demo` | ✅ |
+| 第 6 章 | knowledge-embedding：向量化与「模型锁版本」铁律 | `embedding/` · `Chapter06Demo` | ✅ |
+| 第 7 章 | knowledge-retriever：Hybrid Search 与 RRF 融合 | `retriever/` · `Chapter07Demo` | ✅ |
+| 第 8 章 | knowledge-reranker：精排与 MMR 多样性去重 | `reranker/` · `Chapter08Demo` | ✅ |
+| 第 9 章 | knowledge-workspace：租户、工作空间与知识库 | `workspace/` · `Chapter09Demo` | ✅ |
+| 第 10 章 | knowledge-acl：权限感知检索 | `acl/` · `Chapter09Demo`（第 10 章部分） | ✅ |
+| 第 11 章 | knowledge-sync：增量同步与删除同步 | `sync/` · `Chapter11Demo` | ✅ |
+| 第 12 章 | knowledge-browser：网页采集与连接器生态 | `browser/` · `Chapter11Demo`（第 12 章部分） | ✅ |
+| 第 13 章 | knowledge-api：统一 API 与门面模式 | `api/`、`application/` · `Chapter13Demo` | ✅ |
+| 第 14 章 | knowledge-admin：管理端与全链路复盘 | `admin/` · `Chapter14Demo` | ✅ |
+
+### 如何运行全部 Demo
+
+全部代码**零外部依赖**（不需要 PostgreSQL / Redis / Docker / API Key），编译后直接跑：
+
+```bash
+mvn -o compile
+
+CP="target/classes:<poi/pdfbox/jackson 依赖>"
+for d in Chapter03Demo Chapter04Demo Chapter05Demo Chapter06Demo Chapter07Demo \
+         Chapter08Demo Chapter09Demo Chapter11Demo Chapter13Demo Chapter14Demo \
+         IngestionPipelineDemo; do
+  java -cp "$CP" com.zero.ai.agentstudy.day15knowledgeplatform.demo.$d
+done
+```
+
+各章 Demo 覆盖的能力：
+
+| Demo | 验证内容 |
+| --- | --- |
+| `Chapter03Demo` | 文档状态机拦截、跨租户防护、版本递增、删除事件 |
+| `Chapter04Demo` | **凭空生成** docx/xlsx/pptx/pdf 再解析回来，闭环验证解析链路 |
+| `Chapter05Demo` | 定长 / 语义 / 结构化三种切分策略的效果对比 |
+| `Chapter06Demo` | 向量相似、归一化、批处理与缓存、**跨模型比较拦截** |
+| `Chapter07Demo` | 向量 vs BM25 vs RRF 融合、租户隔离、**向量无零命中** |
+| `Chapter08Demo` | 基线 vs 精排、MMR 去重、精排服务降级 |
+| `Chapter09Demo` | 三层结构、跨租户拦截、ACL 矩阵、**职责分离** |
+| `Chapter11Demo` | 内容指纹、增量同步计划（含 DELETE）、网页采集失败路径 |
+| `Chapter13Demo` | 入库全链路、权限隔离、**删除同步**、**更新不同步** |
+| `Chapter14Demo` | 授权审计、平台统计、**索引一致性检查**、全链路复盘 |
+| `IngestionPipelineDemo` | 「上传 → 解析 → 切分」上半段流水线 |
+
+### 当前实现约束（阅读代码前必读）
+
+为保证「零依赖即可跑通」，本模块做了如下取舍，**这些都不是生产实现**：
+
+- **存储全部为内存**：所有 Repository / VectorStore / BM25 索引均为内存实现，进程重启即丢失。
+- **pgvector / Redis 未接入**：各仓储端口已留好，替换实现只需改 `PlatformConfiguration` 一处。
+- **OCR 为 Null Object**：`NullOcrEngine` 明确报错而非静默返回空文本。
+- **Embedding 默认是 HashingEmbeddingModel**：它是**字面相似**而非语义相似（第 6 章有详细说明），
+  生产必须换成真实稠密模型。
+- **租户与身份来自请求头**：仅用于演示，可被伪造；生产必须改用 JWT / OAuth2。
+- **无 src/test 单元测试**：全仓库零测试，各章 Demo 承担了验证职责。
+
+完整的「教学实现 vs 生产实现」差距清单，见 **第 14 章第六节**。
 
 ---
 
-> **本章（第 0 章）到此结束。** 项目骨架与 README（自包含学习资料）已就绪。
+## 十三、配套文档索引
+
+- `ARCHITECTURE.md`：整体架构、全链路 ASCII 图、如何支撑百万文档/SaaS/多租户。 ✅
+- `chapters/`：每章学习总结、代码解析、面试题、扩展阅读。 ✅（已产出第 1~5 章）
+- `API.md`：知识库/上传/检索/Workspace/ACL/Embedding/管理接口 + OpenAPI。 🔲 待产出
+- `DATABASE.md`：全部表结构、索引设计、ER 图、优化。 🔲 待产出
+- `DEPLOY.md`：Docker / Compose / K8s / 高可用 / 配置管理。 🔲 待产出
+- `TESTING.md`：单测 / 集成测试 / Testcontainers / 性能测试。 🔲 待产出
+- `adr/`：架构决策记录（为什么 Modulith / pgvector / Hybrid / Rerank / DDD）。 🔲 待产出
+- `ROADMAP.md`：V1 / V2 / V3 SaaS 演进路线。 🔲 待产出
+- `TODO.md`：⭐ 必做 / ⭐⭐ 进阶 / ⭐⭐⭐ 企业挑战。 🔲 待产出
+- `CHANGELOG.md`：变更记录。 🔲 待产出
+
+---
+
+> **当前进度：第 0~14 章全部完成**，13 个业务模块全部实现并有可运行 Demo。
 >
-> 输入「**继续**」，进入 **第 1 章：企业知识平台总论与领域建模**，我们将正式开始逐模块的代码实现。
+> 完整的文档处理与检索链路均可离线跑通：
+>
+> ```
+> 上传 → 解析 → 切分 → 向量化 → 双索引入库 → 权限收敛 → 混合召回 → 精排 → 去冗余 → 结果
+> ```
+>
+> 接下来可做的三件事：
+>
+> 1. **补齐配套文档**：`API.md` / `DATABASE.md` / `DEPLOY.md` / `TESTING.md` /
+>    `adr/` / `ROADMAP.md` / `TODO.md` 仍未产出。
+> 2. **把教学实现推向生产**：按第 14 章第六节的 10 条清单逐项替换
+>    （优先级：租户来源 → 持久化与索引 → 真实 Embedding + minScore）。
+> 3. **进入 Day16**：知识平台进阶（Hybrid 检索调优与评测体系）。

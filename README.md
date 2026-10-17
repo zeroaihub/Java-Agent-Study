@@ -87,6 +87,7 @@ Java-Agent-Study/
 │   ├── day14wechatagent/            # Day14 - Enterprise AI WeChat Agent
 │   ├── day15knowledgeplatform/      # Day15 - 企业知识平台（13 模块 + 14 章，全链路可跑）
 │   ├── day16knowledgeagentv2/       # Day16 - 企业知识智能体 V2（演示）
+│   ├── day17codeagent/              # Day17 - Code Agent（19 包 + 20 章 + 18 个可运行 Demo）
 │   └── AgentStudyApplication.java
 ├── src/main/resources/
 │   ├── application.yml              # 统一配置（所有模块共享）
@@ -147,11 +148,16 @@ dayXX/
 | 15 | Knowledge Platform | 多租户、Document Pipeline、Hybrid Search、Reranker、ACL | ✅ 13 个模块全部实现（第 1~14 章），11 个可运行 Demo；缺 `API.md` 等配套文档 |
 | 16 | Knowledge Agent V2 | 检索规划、RRF 融合、引用溯源、接地校验、评测、可观测 | 🧩 以独立可运行的 `ChapterNNDemo` 演示类为主，无 Controller |
 
-### 规划中（Day17 – Day30）
+### 已完成（Day17）
 
 | Day | 主题 | 核心内容 | 状态 |
 |-----|------|----------|------|
-| 17 | Code Agent | 代码生成与执行 | 🔲 |
+| 17 | Code Agent | VFS 唯一写入口、工具系统、静态分析与 RepoMap、上下文预算、SEARCH/REPLACE 补丁、命令沙箱、编译 / 测试验证、自修复三重刹车、安全护栏、规则评审、测试生成、GitOps、Pass@k 评测、Trace 与预算护栏、编排与 REST API | ✅ 19 个包全部实现：20 章教程 + 18 个可运行 Demo + 8 份配套文档（README / ARCHITECTURE / API / DATABASE / DEPLOY / SECURITY / EVALUATION / .env.example） |
+
+### 规划中（Day18 – Day30）
+
+| Day | 主题 | 核心内容 | 状态 |
+|-----|------|----------|------|
 | 18 | AI IDE | 智能开发环境 | 🔲 |
 | 19 | SQL Agent | 自然语言转SQL | 🔲 |
 | 20 | Data Analysis Agent | 数据分析 | 🔲 |
@@ -385,13 +391,32 @@ Agent 从「被驱动」走向「自主」的分水岭。实现完整 Planning E
 
 `docs/` 是本模块最完整的部分（README / ARCHITECTURE / API / DATABASE / DEPLOY / EVALUATION / SECURITY + 20 章）。
 
+### Day17 - Code Agent（代码生成与执行）
+
+把 LLM 从「聊天玩具」推进到「能真正改动代码库并通过验证的工程角色」：**读仓库 → 选址 → 生成补丁 → 安全审查 → 应用 → 编译 → 测试 → 自修复 → 评审 → 变更集 → PR**。
+
+当前进度：**19 个包全部实现**，20 章教程 + **18 个零依赖可运行 Demo**（`Chapter03Demo` ~ `Chapter20Demo`，全部 `exit=0`）+ 8 份配套文档。
+
+- `repo/` —— `VirtualFileSystem` 唯一写入口；`Path.startsWith` 根校验（不用字符串前缀）+ 内容指纹（SHA-256）
+- `tools/` —— 五个工具（list/read/search/write/run），**工具失败是返回值不是异常**
+- `analysis/` —— 零依赖解析器（等长空格清洗）+ 符号表 + 依赖图 + RepoMap（102 行 → 552 token）
+- `context/` —— 四路加权打分 + `FULL → SIGNATURE → 丢弃` 三级降级，输出预留强制 > 0
+- `patch/` —— SEARCH/REPLACE 补丁，四级匹配，**打不上必须明确失败**；脏输出 / Unified Diff 双解析
+- `sandbox/` —— 白名单 + 参数黑名单 + 超时 + 环境隔离；`timedOut` 与 `exitCode` 分离
+- `verify/` —— `javax.tools.JavaCompiler` 结构化诊断（整仓 438ms / 片段 29ms）+ 沙箱内 `-ea` 跑测试
+- `iterate/` —— 自修复三重刹车（轮次 / 错误签名 / 内容指纹），实测省 80% 成本
+- `safety/`、`review/`、`testgen/`、`gitops/`、`eval/`、`observability/`、`metering/` —— 安全护栏、只评审增量的规则评审、测试生成、变更集与 PR 草稿、Pass@k 评测、Trace 与预算护栏
+- `orchestrator/`、`api/` —— 12 步流水线 + REST API（**租户只从 Header 注入**，Body 不含身份字段）
+
+真实可复现的数据：整文件重写 vs 补丁 **191 vs 88 token（省 53.9%）**；`Pass@1=80% → Pass@2=100%`（`maxRepairRounds=3` 的依据）；编译验证是瓶颈（占步骤耗时 83%）。
+
 ---
 
 ## 当前实现状态说明
 
 这一节是为了让阅读代码的人**准确分辨"教程目标"与"当前代码"**，避免被文档误导。
 
-1. **共享上下文**：17 个模块不是 Maven 多模块工程，而是同一工程下按包名划分，共享一份 `application.yml` 与 8080 端口。
+1. **共享上下文**：18 个模块不是 Maven 多模块工程，而是同一工程下按包名划分，共享一份 `application.yml` 与 8080 端口。
 2. **存储均为内存实现**：向量库（`InMemoryVectorStore`）、会话（`InMemorySessionStore`）、审批仓储、知识库全部是 `Map` 实现，**进程重启即丢失**。
 3. **零测试**：仓库中尚无 `src/test`，但 `pom.xml` 已引入 `spring-boot-starter-test`。
 4. **存在 Mock / 占位实现**：`EchoLlmClient`、`HashEmbeddingClient`、`MockLlmClient`、`TrendingStubClient`、`MockMessageChannel`、`InProcessTransport`、`HashingEmbeddingProvider`，以及 Day16 用「词项重合度」替代 NLI 模型。这些是为「零依赖跑通」刻意设计的，**不是生产实现**。
@@ -411,6 +436,7 @@ Agent 从「被驱动」走向「自主」的分水岭。实现完整 Planning E
 - **chapters/** — 逐章节 Markdown 学习记录
 - Day14 额外提供 `API.md` / `DATABASE.md` / `DEPLOY.md` / `TESTING.md` / `ROADMAP.md` / `CHANGELOG.md` / `ADR/`（架构决策记录）
 - Day16 额外提供 `EVALUATION.md` / `SECURITY.md`
+- Day17 额外提供 `API.md` / `DATABASE.md` / `DEPLOY.md` / `SECURITY.md` / `EVALUATION.md` / `.env.example`
 
 ---
 
